@@ -9,6 +9,7 @@ const offerTypes = {
   hotel: 'Отель',
 };
 
+// Создание карточки
 const createCard = (card) => {
   const cardElement = cardTemplate.cloneNode(true);
   cardElement.querySelector('.popup__avatar').src = `${card.author.avatar}`;
@@ -36,6 +37,7 @@ const createCard = (card) => {
   mapCanvas.appendChild(cardElement);
 };
 
+// Создание множества карточек
 const createCards = (cards) => {
   cards.forEach((card) => {
     createCard(card);

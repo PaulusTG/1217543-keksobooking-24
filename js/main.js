@@ -1,5 +1,5 @@
 import {getRandomNumber, getRandomFloat, getRandomRangeFromArray} from './utils.js';
-import {getCard} from './templates-generator.js';
+import {createCards} from './templates-generator.js';
 
 const TYPES = ['palace', 'flat', 'house', 'bungalow', 'hotel'];
 const TIME_OF_CHECK = ['12:00', '13:00', '14:00'];
@@ -52,5 +52,5 @@ const createAds = () => {
 };
 
 const ads = createAds();
-getCard(ads);
+createCards(ads);
 

@@ -9,6 +9,14 @@ const roomsCapacity = {
   '100': ['0'],
 };
 
+const typesMinPrice = {
+  'bungalow': '0',
+  'flat': '1000',
+  'hotel': '3000',
+  'house': '5000',
+  'palace': '10000',
+};
+
 const adForm = document.querySelector('.ad-form');
 const mapFilters = document.querySelector('.map__filters');
 const activeElements = document.querySelectorAll('.ad-form fieldset, .map__filter, .map__filters fieldset');
@@ -16,6 +24,9 @@ const titleInput = adForm.querySelector('#title');
 const priceInput = adForm.querySelector('#price');
 const roomsNumberSelect = adForm.querySelector('#room_number');
 const capacityOptions = adForm.querySelectorAll('#capacity option');
+const typesSelect = adForm.querySelector('#type');
+const timeinSelect = adForm.querySelector('#timein');
+const timeoutSelect = adForm.querySelector('#timeout');
 
 const changeFormState = (isDisabled = true) => {
   if (isDisabled) {
@@ -50,11 +61,18 @@ priceInput.addEventListener('input', () => {
 
   if (priceValue > MAX_PRICE) {
     priceInput.setCustomValidity(`Цена не может превышать ${ MAX_PRICE } руб.`);
+  } else if (priceValue < priceInput.min) {
+    priceInput.setCustomValidity(`Цена не может быть меньше ${ priceInput.min } руб.`);
   } else {
     priceInput.setCustomValidity('');
   }
 
   priceInput.reportValidity();
+});
+
+typesSelect.addEventListener('change', () => {
+  priceInput.min = typesMinPrice[typesSelect.value];
+  priceInput.placeholder = priceInput.min;
 });
 
 const changeSelected = () => {
@@ -68,16 +86,25 @@ const changeSelected = () => {
 
 const onRoomsNumberChange = () => {
   capacityOptions.forEach((capacityOption) => {
-    if (roomsCapacity[roomsNumberSelect.value].includes(capacityOption.value)) {
-      capacityOption.disabled = false;
-    } else {
-      capacityOption.disabled = true;
-    }
+    capacityOption.disabled = !roomsCapacity[roomsNumberSelect.value].includes(capacityOption.value);
   });
   changeSelected();
 };
 
 onRoomsNumberChange();
 roomsNumberSelect.addEventListener('change', onRoomsNumberChange);
+
+const onTimeSelectChange = (evt) => {
+  const currentSelect = evt.target;
+
+  if (currentSelect.id === 'timein') {
+    timeoutSelect.value = currentSelect.value;
+  } else if (currentSelect.id === 'timeout') {
+    timeinSelect.value = currentSelect.value;
+  }
+};
+
+timeinSelect.addEventListener('change', onTimeSelectChange);
+timeoutSelect.addEventListener('change', onTimeSelectChange);
 
 export {changeFormState};

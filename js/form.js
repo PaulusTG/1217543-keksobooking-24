@@ -42,6 +42,22 @@ const changeFormState = (isDisabled = true) => {
   });
 };
 
+const changeSelected = () => {
+  for (const capacityOption of capacityOptions) {
+    if (!capacityOption.disabled) {
+      capacityOption.selected = true;
+      return;
+    }
+  }
+};
+
+const onRoomsNumberChange = () => {
+  capacityOptions.forEach((capacityOption) => {
+    capacityOption.disabled = !roomsCapacity[roomsNumberSelect.value].includes(capacityOption.value);
+  });
+  changeSelected();
+};
+
 titleInput.addEventListener('input', () => {
   const valueLength = titleInput.value.length;
 
@@ -75,36 +91,10 @@ typesSelect.addEventListener('change', () => {
   priceInput.placeholder = priceInput.min;
 });
 
-const changeSelected = () => {
-  for (const capacityOption of capacityOptions) {
-    if (!capacityOption.disabled) {
-      capacityOption.selected = true;
-      return;
-    }
-  }
-};
-
-const onRoomsNumberChange = () => {
-  capacityOptions.forEach((capacityOption) => {
-    capacityOption.disabled = !roomsCapacity[roomsNumberSelect.value].includes(capacityOption.value);
-  });
-  changeSelected();
-};
+roomsNumberSelect.addEventListener('change', onRoomsNumberChange);
+timeinSelect.addEventListener('change', () => timeoutSelect.value = timeinSelect.value);
+timeoutSelect.addEventListener('change', () => timeinSelect.value = timeoutSelect.value);
 
 onRoomsNumberChange();
-roomsNumberSelect.addEventListener('change', onRoomsNumberChange);
-
-const onTimeSelectChange = (evt) => {
-  const currentSelect = evt.target;
-
-  if (currentSelect.id === 'timein') {
-    timeoutSelect.value = currentSelect.value;
-  } else if (currentSelect.id === 'timeout') {
-    timeinSelect.value = currentSelect.value;
-  }
-};
-
-timeinSelect.addEventListener('change', onTimeSelectChange);
-timeoutSelect.addEventListener('change', onTimeSelectChange);
 
 export {changeFormState};

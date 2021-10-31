@@ -1,4 +1,5 @@
 import {changeFormState} from './form.js';
+import {createCard} from './templates-generator.js';
 
 const MAP = L.map('map-canvas');
 const MARKER_GROUP = L.layerGroup().addTo(MAP);
@@ -70,4 +71,10 @@ const createMarker = (func, point) => {
     .bindPopup(func);
 };
 
-export {addMap, addMainPin, createMarker};
+const makeMarkers = (cards) => {
+  cards.forEach((card) => {
+    createMarker(() => createCard(card), card.location);
+  });
+};
+
+export {addMap, addMainPin, makeMarkers};

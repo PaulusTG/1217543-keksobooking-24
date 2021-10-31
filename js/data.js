@@ -52,4 +52,6 @@ const getAd = (userID, title, description, address) => {
   return {author, offer, location};
 };
 
-export {createPoints, getAd};
+const createCards = () => createPoints().map((point) => getAd(getRandomNumber(1,10), 'Сдаётся жильё', 'Сдам жильё. Недорого.', `${point.lat}, ${point.lng}`));
+
+export {createCards};

@@ -1,3 +1,7 @@
+import {sendData} from './api.js';
+import {resetMainPin, closeOpenedPopup} from './map.js';
+import {showSuccessMessage, showErrorMessage} from './utils.js';
+
 const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
 const MAX_PRICE = 1000000;
@@ -19,6 +23,7 @@ const typesMinPrice = {
 
 const adForm = document.querySelector('.ad-form');
 const mapFilters = document.querySelector('.map__filters');
+const btnReset = adForm.querySelector('.ad-form__reset');
 const activeElements = document.querySelectorAll('.ad-form fieldset, .map__filter, .map__filters fieldset');
 const titleInput = adForm.querySelector('#title');
 const priceInput = adForm.querySelector('#price');
@@ -39,6 +44,28 @@ const changeFormState = (isDisabled = true) => {
 
   activeElements.forEach((activeElement) => {
     activeElement.disabled = isDisabled;
+  });
+};
+
+const setFormDefault = () => {
+  document.querySelector('.ad-form').reset();
+  document.querySelector('.map__filters').reset();
+  resetMainPin();
+  closeOpenedPopup();
+};
+
+const setFormSubmit = (onSuccess) => {
+  adForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+
+    sendData(
+      () => {
+        onSuccess();
+        showSuccessMessage();
+      },
+      showErrorMessage,
+      new FormData(evt.target),
+    );
   });
 };
 
@@ -95,6 +122,11 @@ roomsNumberSelect.addEventListener('change', onRoomsNumberChange);
 timeinSelect.addEventListener('change', () => timeoutSelect.value = timeinSelect.value);
 timeoutSelect.addEventListener('change', () => timeinSelect.value = timeoutSelect.value);
 
+btnReset.addEventListener('click', (evt) => {
+  evt.preventDefault();
+  setFormDefault();
+});
+
 onRoomsNumberChange();
 
-export {changeFormState};
+export {changeFormState, setFormSubmit, setFormDefault};

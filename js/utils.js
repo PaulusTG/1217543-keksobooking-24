@@ -1,3 +1,5 @@
+const ALERT_SHOW_TIME = 5000;
+
 // Функция, возвращающая случайное целое число из переданного диапазона включительно.
 const getRandomNumber = (min, max) => {
   min = Math.ceil(Math.min(Math.abs(min), Math.abs(max)));
@@ -27,4 +29,59 @@ const getRandomRangeFromArray = (arrayToRange) => {
   return arr;
 };
 
-export {getRandomNumber, getRandomFloat, getRandomRangeFromArray};
+const showAlert = (message) => {
+  const alertContainer = document.createElement('div');
+  alertContainer.style.zIndex = 100;
+  alertContainer.style.position = 'absolute';
+  alertContainer.style.left = 0;
+  alertContainer.style.top = 0;
+  alertContainer.style.right = 0;
+  alertContainer.style.padding = '10px 3px';
+  alertContainer.style.fontSize = '20px';
+  alertContainer.style.textAlign = 'center';
+  alertContainer.style.backgroundColor = 'coral';
+
+  alertContainer.textContent = message;
+
+  document.body.append(alertContainer);
+
+  setTimeout(() => {
+    alertContainer.remove();
+  }, ALERT_SHOW_TIME);
+};
+
+const isEscapeKey = (evt) => evt.key === 'Escape';
+
+const hideMessage = (evt) => {
+  if (isEscapeKey(evt)) {
+    evt.preventDefault();
+  }
+  document.body.lastChild.remove();
+  document.removeEventListener('click', hideMessage);
+  document.removeEventListener('keydown', hideMessage);
+  document.querySelector('.error__button').removeEventListener('click', hideMessage);
+};
+
+const addListenersOnMessage = () => {
+  document.addEventListener('click', hideMessage);
+  document.addEventListener('keydown', hideMessage);
+};
+
+const showSuccessMessage = () => {
+  const successMessageTemplate = document.querySelector('#success').content.querySelector('.success');
+  const message = successMessageTemplate.cloneNode(true);
+  document.body.append(message);
+  addListenersOnMessage();
+};
+
+const showErrorMessage = () => {
+  const errorMessageTemplate = document.querySelector('#error').content.querySelector('.error');
+  const message = errorMessageTemplate.cloneNode(true);
+  document.body.append(message);
+  addListenersOnMessage();
+
+  const errorButton = document.querySelector('.error__button');
+  errorButton.addEventListener('click', hideMessage);
+};
+
+export {showAlert, showSuccessMessage, showErrorMessage, getRandomNumber, getRandomFloat, getRandomRangeFromArray};

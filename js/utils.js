@@ -1,5 +1,8 @@
 const ALERT_SHOW_TIME = 5000;
 
+const successMessageTemplate = document.querySelector('#success').content.querySelector('.success');
+const errorMessageTemplate = document.querySelector('#error').content.querySelector('.error');
+
 // Функция, возвращающая случайное целое число из переданного диапазона включительно.
 const getRandomNumber = (min, max) => {
   min = Math.ceil(Math.min(Math.abs(min), Math.abs(max)));
@@ -68,20 +71,18 @@ const addListenersOnMessage = () => {
 };
 
 const showSuccessMessage = () => {
-  const successMessageTemplate = document.querySelector('#success').content.querySelector('.success');
   const message = successMessageTemplate.cloneNode(true);
-  document.body.append(message);
   addListenersOnMessage();
+  document.body.append(message);
 };
 
 const showErrorMessage = () => {
-  const errorMessageTemplate = document.querySelector('#error').content.querySelector('.error');
   const message = errorMessageTemplate.cloneNode(true);
-  document.body.append(message);
   addListenersOnMessage();
 
-  const errorButton = document.querySelector('.error__button');
+  const errorButton = message.querySelector('.error__button');
   errorButton.addEventListener('click', hideMessage);
+  document.body.append(message);
 };
 
 export {showAlert, showSuccessMessage, showErrorMessage, getRandomNumber, getRandomFloat, getRandomRangeFromArray};

@@ -3,6 +3,7 @@ import {createCard} from './templates-generator.js';
 
 const MAP = L.map('map-canvas');
 const MARKER_GROUP = L.layerGroup().addTo(MAP);
+const MAP_ZOOM = 13.5;
 
 const MAIN_PIN_ADDRESS = {
   lat: 35.67863,
@@ -37,7 +38,7 @@ const addMap = () => {
     changeFormState(false);
     setAddressInputValue();
   })
-    .setView({lat: 35.67863, lng: 139.75103}, 13.5);
+    .setView({lat: MAIN_PIN_ADDRESS.lat, lng: MAIN_PIN_ADDRESS.lng}, MAP_ZOOM);
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
     {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',

@@ -6,9 +6,7 @@ const getData = (onSuccess, onError) => {
       }
       throw new Error(`${response.status} ${response.statusText}`);
     })
-    .then((data) => {
-      onSuccess(data);
-    })
+    .then(onSuccess)
     .catch(() => {
       onError('Не удалось получить данные. Попробуйте ещё раз');
     });
@@ -24,10 +22,9 @@ const sendData = (onSuccess, onError, body) => {
   )
     .then((response) => {
       if (response.ok) {
-        onSuccess();
-      } else {
-        onError();
+        return onSuccess();
       }
+      throw new Error(`${response.status} ${response.statusText}`);
     })
     .catch(() => {
       onError();

@@ -59,7 +59,11 @@ const onHideMessage = (evt) => {
   document.body.lastChild.remove();
   document.removeEventListener('click', onHideMessage);
   document.removeEventListener('keydown', onHideMessage);
-  document.querySelector('.error__button').removeEventListener('click', onHideMessage);
+
+  const errorButton = document.querySelector('.error__button');
+  if (errorButton) {
+    errorButton.removeEventListener('click', onHideMessage);
+  }
 };
 
 const addListenersOnMessage = () => {
@@ -82,4 +86,4 @@ const showErrorMessage = () => {
   document.body.append(message);
 };
 
-export {showAlert, showSuccessMessage, showErrorMessage, getRandomNumber, getRandomFloat, getRandomRangeFromArray};
+export { showAlert, showSuccessMessage, showErrorMessage, getRandomNumber, getRandomFloat, getRandomRangeFromArray };

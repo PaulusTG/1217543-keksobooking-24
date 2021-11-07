@@ -1,9 +1,11 @@
 import {changeFormState} from './form.js';
 import {createCard} from './templates-generator.js';
+import {compare} from './map-filters.js';
 
 const MAP = L.map('map-canvas');
 const MARKER_GROUP = L.layerGroup().addTo(MAP);
-const MAP_ZOOM = 13.5;
+const MAP_ZOOM = 13;
+const MARKERS_COUNT = 10;
 
 const MAIN_PIN_ADDRESS = {
   lat: 35.67863,
@@ -77,9 +79,14 @@ const createMarker = (func, point) => {
 };
 
 const makeMarkers = (cards) => {
-  cards.forEach((card) => {
-    createMarker(() => createCard(card), card.location);
-  });
+  MARKER_GROUP.clearLayers();
+
+  cards
+    .filter(compare)
+    .slice(0, MARKERS_COUNT)
+    .forEach((card) => {
+      createMarker(() => createCard(card), card.location);
+    });
 };
 
 const resetMainPin = () => {

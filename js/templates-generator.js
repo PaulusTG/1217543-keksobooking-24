@@ -29,10 +29,23 @@ const createCard = (card) => {
   renderElement(cardElement, '.popup__text--address', card.offer.address, `${card.offer.address}`);
   renderElement(cardElement, '.popup__text--price', card.offer.price, `${card.offer.price} ₽/ночь`);
   renderElement(cardElement, '.popup__type', card.offer.type, offerTypes[card.offer.type]);
-  renderElement(cardElement, '.popup__text--capacity', card.offer.rooms && card.offer.guests, `${card.offer.rooms} комнаты ${card.offer.guests} гостей`);
+  renderElement(cardElement, '.popup__text--capacity', card.offer.rooms && card.offer.guests, `${card.offer.rooms} комнаты для ${card.offer.guests} гостей`);
   renderElement(cardElement, '.popup__text--time', card.offer.checkin && card.offer.checkout, `Заезд после ${card.offer.checkin}, выезд до ${card.offer.checkout}`);
-  renderElement(cardElement, '.popup__features', card.offer.features, `${card.offer.features}`);
   renderElement(cardElement, '.popup__description', card.offer.description, `${card.offer.description}`);
+
+  if (card.offer.features) {
+    const cardFeatures = cardElement.querySelector('.popup__features');
+    cardFeatures.innerHTML = '';
+    const features = card.offer.features.map((feature) => {
+      const elementLi = document.createElement('li');
+      elementLi.classList.add('popup__feature');
+      elementLi.classList.add(`popup__feature--${feature}`);
+      return elementLi;
+    });
+    cardFeatures.append(...features);
+  } else {
+    cardElement.querySelector('.popup__features').classList.add('hidden');
+  }
 
   if (card.offer.photos) {
     const cardPhotos = cardElement.querySelector('.popup__photos');
@@ -55,4 +68,4 @@ const createCard = (card) => {
   return cardElement;
 };
 
-export {createCard};
+export { createCard };

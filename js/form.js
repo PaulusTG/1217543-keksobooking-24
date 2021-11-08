@@ -1,6 +1,6 @@
-import {sendData} from './api.js';
-import {resetMainPin, closeOpenedPopup} from './map.js';
-import {showSuccessMessage, showErrorMessage} from './utils.js';
+import { sendData } from './api.js';
+import { resetMainPin, closeOpenedPopup } from './map.js';
+import { showSuccessMessage, showErrorMessage } from './utils.js';
 
 const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
@@ -48,8 +48,8 @@ const changeFormState = (isDisabled = true) => {
 };
 
 const setFormDefault = () => {
-  document.querySelector('.ad-form').reset();
-  document.querySelector('.map__filters').reset();
+  adForm.reset();
+  mapFilters.reset();
   resetMainPin();
   closeOpenedPopup();
 };
@@ -88,10 +88,10 @@ const onRoomsNumberChange = () => {
 titleInput.addEventListener('input', () => {
   const valueLength = titleInput.value.length;
 
-  if  (valueLength < MIN_TITLE_LENGTH) {
-    titleInput.setCustomValidity(`Ещё ${  MIN_TITLE_LENGTH - valueLength } симв.`);
-  } else if (valueLength >=  MAX_TITLE_LENGTH) {
-    titleInput.setCustomValidity(`Достигнута максимальная длина ${ MAX_TITLE_LENGTH } симв.`);
+  if (valueLength < MIN_TITLE_LENGTH) {
+    titleInput.setCustomValidity(`Ещё ${MIN_TITLE_LENGTH - valueLength} симв.`);
+  } else if (valueLength >= MAX_TITLE_LENGTH) {
+    titleInput.setCustomValidity(`Достигнута максимальная длина ${MAX_TITLE_LENGTH} симв.`);
   } else {
     titleInput.setCustomValidity('');
   }
@@ -103,9 +103,9 @@ priceInput.addEventListener('input', () => {
   const priceValue = priceInput.value;
 
   if (priceValue > MAX_PRICE) {
-    priceInput.setCustomValidity(`Цена не может превышать ${ MAX_PRICE } руб.`);
+    priceInput.setCustomValidity(`Цена не может превышать ${MAX_PRICE} руб.`);
   } else if (priceValue < priceInput.min) {
-    priceInput.setCustomValidity(`Цена не может быть меньше ${ priceInput.min } руб.`);
+    priceInput.setCustomValidity(`Цена не может быть меньше ${priceInput.min} руб.`);
   } else {
     priceInput.setCustomValidity('');
   }
@@ -129,4 +129,4 @@ btnReset.addEventListener('click', (evt) => {
 
 onRoomsNumberChange();
 
-export {changeFormState, setFormSubmit, setFormDefault};
+export { changeFormState, setFormSubmit, setFormDefault };

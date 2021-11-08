@@ -1,9 +1,9 @@
-import {changeFormState} from './form.js';
-import {createCard} from './templates-generator.js';
+import { changeFormState } from './form.js';
+import { createCard } from './templates-generator.js';
 
 const MAP = L.map('map-canvas');
 const MARKER_GROUP = L.layerGroup().addTo(MAP);
-const MAP_ZOOM = 13.5;
+const MAP_ZOOM = 13;
 
 const MAIN_PIN_ADDRESS = {
   lat: 35.67863,
@@ -16,7 +16,7 @@ const MAIN_PIN_ICON = L.icon({
   iconAnchor: [26, 52],
 });
 
-const mainPinMarker  = L.marker(
+const mainPinMarker = L.marker(
   {
     lat: MAIN_PIN_ADDRESS.lat,
     lng: MAIN_PIN_ADDRESS.lng,
@@ -38,7 +38,7 @@ const addMap = () => {
     changeFormState(false);
     setAddressInputValue();
   })
-    .setView({lat: MAIN_PIN_ADDRESS.lat, lng: MAIN_PIN_ADDRESS.lng}, MAP_ZOOM);
+    .setView({ lat: MAIN_PIN_ADDRESS.lat, lng: MAIN_PIN_ADDRESS.lng }, MAP_ZOOM);
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
     {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
@@ -46,16 +46,17 @@ const addMap = () => {
   ).addTo(MAP);
 };
 
-const addMainPin = () => {mainPinMarker
-  .on('moveend', (evt) => {
-    const markerTarget = evt.target;
-    adressInput.value = `${markerTarget.getLatLng().lat.toFixed(5)}, ${markerTarget.getLatLng().lng.toFixed(5)}`;
-  })
-  .addTo(MAP);
+const addMainPin = () => {
+  mainPinMarker
+    .on('moveend', (evt) => {
+      const markerTarget = evt.target;
+      adressInput.value = `${markerTarget.getLatLng().lat.toFixed(5)}, ${markerTarget.getLatLng().lng.toFixed(5)}`;
+    })
+    .addTo(MAP);
 };
 
 const createMarker = (func, point) => {
-  const {lat, lng} = point;
+  const { lat, lng } = point;
 
   const icon = L.icon({
     iconUrl: 'img/pin.svg',
@@ -66,8 +67,7 @@ const createMarker = (func, point) => {
   const marker = L.marker({
     lat,
     lng,
-  },
-  {
+  }, {
     icon,
   });
 
@@ -77,9 +77,12 @@ const createMarker = (func, point) => {
 };
 
 const makeMarkers = (cards) => {
-  cards.forEach((card) => {
-    createMarker(() => createCard(card), card.location);
-  });
+  MARKER_GROUP.clearLayers();
+
+  cards
+    .forEach((card) => {
+      createMarker(() => createCard(card), card.location);
+    });
 };
 
 const resetMainPin = () => {
@@ -94,4 +97,4 @@ const closeOpenedPopup = () => {
   MAP.closePopup();
 };
 
-export {addMap, addMainPin, makeMarkers, resetMainPin, closeOpenedPopup};
+export { addMap, addMainPin, makeMarkers, resetMainPin, closeOpenedPopup };

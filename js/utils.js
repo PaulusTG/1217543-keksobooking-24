@@ -3,7 +3,6 @@ const ALERT_SHOW_TIME = 5000;
 const successMessageTemplate = document.querySelector('#success').content.querySelector('.success');
 const errorMessageTemplate = document.querySelector('#error').content.querySelector('.error');
 
-// Функция, возвращающая случайное целое число из переданного диапазона включительно.
 const getRandomNumber = (min, max) => {
   min = Math.ceil(Math.min(Math.abs(min), Math.abs(max)));
   max = Math.floor(Math.max(Math.abs(min), Math.abs(max)));
@@ -11,7 +10,6 @@ const getRandomNumber = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
-// Функция, возвращающая случайное число с плавающей точкой из переданного диапазона включительно.
 const getRandomFloat = (min, max, numAfterPoint = 1) => {
   min = Math.min(Math.abs(min), Math.abs(max));
   max = Math.max(Math.abs(min), Math.abs(max));
@@ -19,7 +17,6 @@ const getRandomFloat = (min, max, numAfterPoint = 1) => {
   return +((Math.random() * (max - min)) + min).toFixed(numAfterPoint);
 };
 
-// Получаем массив строк случайной длины из массива
 const getRandomRangeFromArray = (arrayToRange) => {
   const numOfElements = getRandomNumber(1, arrayToRange.length);
   const slice = arrayToRange.slice();
@@ -55,19 +52,23 @@ const showAlert = (message) => {
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
-const hideMessage = (evt) => {
+const onHideMessage = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
   }
   document.body.lastChild.remove();
-  document.removeEventListener('click', hideMessage);
-  document.removeEventListener('keydown', hideMessage);
-  document.querySelector('.error__button').removeEventListener('click', hideMessage);
+  document.removeEventListener('click', onHideMessage);
+  document.removeEventListener('keydown', onHideMessage);
+
+  const errorButton = document.querySelector('.error__button');
+  if (errorButton) {
+    errorButton.removeEventListener('click', onHideMessage);
+  }
 };
 
 const addListenersOnMessage = () => {
-  document.addEventListener('click', hideMessage);
-  document.addEventListener('keydown', hideMessage);
+  document.addEventListener('click', onHideMessage);
+  document.addEventListener('keydown', onHideMessage);
 };
 
 const showSuccessMessage = () => {
@@ -81,8 +82,8 @@ const showErrorMessage = () => {
   addListenersOnMessage();
 
   const errorButton = message.querySelector('.error__button');
-  errorButton.addEventListener('click', hideMessage);
+  errorButton.addEventListener('click', onHideMessage);
   document.body.append(message);
 };
 
-export {showAlert, showSuccessMessage, showErrorMessage, getRandomNumber, getRandomFloat, getRandomRangeFromArray};
+export { showAlert, showSuccessMessage, showErrorMessage, getRandomNumber, getRandomFloat, getRandomRangeFromArray };

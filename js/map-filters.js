@@ -3,6 +3,7 @@ const LOW_PRICE_FILTER = 10000;
 const HIGH_PRICE_FILTER = 50000;
 const CARDS_COUNT = 10;
 
+const mapFilters = document.querySelector('.map__filters');
 const housingType = document.querySelector('#housing-type');
 const housingPrice = document.querySelector('#housing-price');
 const housingRooms = document.querySelector('#housing-rooms');
@@ -63,6 +64,8 @@ const selectFilters = (cb) => {
   housingFeatures.forEach((feature) => {
     feature.addEventListener('change', cb);
   });
+
+  mapFilters.addEventListener('reset', cb);
 };
 
 export { filterCards, selectFilters };

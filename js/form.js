@@ -5,6 +5,7 @@ import { showSuccessMessage, showErrorMessage } from './utils.js';
 const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
 const MAX_PRICE = 1000000;
+const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 
 const roomsCapacity = {
   '1': ['1'],
@@ -32,6 +33,10 @@ const capacityOptions = adForm.querySelectorAll('#capacity option');
 const typesSelect = adForm.querySelector('#type');
 const timeinSelect = adForm.querySelector('#timein');
 const timeoutSelect = adForm.querySelector('#timeout');
+const avatarInput = adForm.querySelector('.ad-form__field input[type=file]');
+const avatarPreview = adForm.querySelector('.ad-form-header__preview img');
+const photoInput = adForm.querySelector('.ad-form__upload input[type=file]');
+const photoPreview = adForm.querySelector('.ad-form__photo');
 
 const changeFormState = (isDisabled = true) => {
   if (isDisabled) {
@@ -85,6 +90,17 @@ const onRoomsNumberChange = () => {
   changeSelected();
 };
 
+const inputPhotoFromUser = (input, preview) => {
+  const file = input.files[0];
+  const fileName = file.name.toLowerCase();
+
+  const matches = FILE_TYPES.some((type) => fileName.endsWith(type));
+
+  if (matches) {
+    preview.src = URL.createObjectURL(file);
+  }
+};
+
 titleInput.addEventListener('input', () => {
   const valueLength = titleInput.value.length;
 
@@ -125,6 +141,16 @@ timeoutSelect.addEventListener('change', () => timeinSelect.value = timeoutSelec
 btnReset.addEventListener('click', (evt) => {
   evt.preventDefault();
   setFormDefault();
+});
+
+avatarInput.addEventListener('change', () => inputPhotoFromUser(avatarInput, avatarPreview));
+photoInput.addEventListener('change', () => {
+  const photo = document.createElement('img');
+  photo.alt = 'Фотография жилья';
+  photo.width = 70;
+  photo.height = 70;
+  inputPhotoFromUser(photoInput, photo);
+  photoPreview.append(photo);
 });
 
 onRoomsNumberChange();

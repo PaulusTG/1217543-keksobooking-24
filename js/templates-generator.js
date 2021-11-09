@@ -54,8 +54,8 @@ const createCard = (card) => {
       const picture = document.createElement('img');
       picture.src = photo;
       picture.alt = 'Фотография жилья';
-      picture.width = '45';
-      picture.height = '40';
+      picture.width = 45;
+      picture.height = 40;
       picture.classList.add('popup__photo');
       return picture;
     });

@@ -35,7 +35,6 @@ const setAddressInputValue = () => {
 
 const addMap = () => {
   MAP.on('load', () => {
-    changeFormState(false);
     setAddressInputValue();
   })
     .setView({ lat: MAIN_PIN_ADDRESS.lat, lng: MAIN_PIN_ADDRESS.lng }, MAP_ZOOM);
@@ -77,12 +76,15 @@ const createMarker = (func, point) => {
 };
 
 const makeMarkers = (cards) => {
-  MARKER_GROUP.clearLayers();
 
-  cards
-    .forEach((card) => {
-      createMarker(() => createCard(card), card.location);
-    });
+  MAP.whenReady(() => {
+    MARKER_GROUP.clearLayers();
+    cards
+      .forEach((card) => {
+        createMarker(() => createCard(card), card.location);
+      });
+  });
+  changeFormState(false);
 };
 
 const resetMainPin = () => {
@@ -91,6 +93,7 @@ const resetMainPin = () => {
     lng: MAIN_PIN_ADDRESS.lng,
   });
   setAddressInputValue();
+  MAP.setView({ lat: MAIN_PIN_ADDRESS.lat, lng: MAIN_PIN_ADDRESS.lng }, MAP_ZOOM);
 };
 
 const closeOpenedPopup = () => {

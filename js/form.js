@@ -6,6 +6,7 @@ const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
 const MAX_PRICE = 1000000;
 const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
+const DEFAULT_AVATAR_PREVIEW = 'img/muffin-grey.svg';
 
 const roomsCapacity = {
   '1': ['1'],
@@ -52,9 +53,17 @@ const changeFormState = (isDisabled = true) => {
   });
 };
 
+const onTypesChange = () => {
+  priceInput.min = typesMinPrice[typesSelect.value];
+  priceInput.placeholder = priceInput.min;
+};
+
 const setFormDefault = () => {
   adForm.reset();
   mapFilters.reset();
+  onTypesChange();
+  avatarPreview.src = DEFAULT_AVATAR_PREVIEW;
+  photoPreview.innerHTML = '';
   resetMainPin();
   closeOpenedPopup();
 };
@@ -90,7 +99,7 @@ const onRoomsNumberChange = () => {
   changeSelected();
 };
 
-const inputPhotoFromUser = (input, preview) => {
+const getPhotoFromUser = (input, preview) => {
   const file = input.files[0];
   const fileName = file.name.toLowerCase();
 
@@ -129,10 +138,7 @@ priceInput.addEventListener('input', () => {
   priceInput.reportValidity();
 });
 
-typesSelect.addEventListener('change', () => {
-  priceInput.min = typesMinPrice[typesSelect.value];
-  priceInput.placeholder = priceInput.min;
-});
+typesSelect.addEventListener('change', onTypesChange);
 
 roomsNumberSelect.addEventListener('change', onRoomsNumberChange);
 timeinSelect.addEventListener('change', () => timeoutSelect.value = timeinSelect.value);
@@ -143,13 +149,13 @@ btnReset.addEventListener('click', (evt) => {
   setFormDefault();
 });
 
-avatarInput.addEventListener('change', () => inputPhotoFromUser(avatarInput, avatarPreview));
+avatarInput.addEventListener('change', () => getPhotoFromUser(avatarInput, avatarPreview));
 photoInput.addEventListener('change', () => {
   const photo = document.createElement('img');
   photo.alt = 'Фотография жилья';
   photo.width = 70;
   photo.height = 70;
-  inputPhotoFromUser(photoInput, photo);
+  getPhotoFromUser(photoInput, photo);
   photoPreview.append(photo);
 });
 

@@ -57,9 +57,10 @@ const filterCards = (cards) => {
 
 const selectFilters = (cb) => {
   const selectsOfFilters = document.querySelectorAll('.map__filters select');
-  for (let i = 0; i < selectsOfFilters.length; i++) {
-    selectsOfFilters[i].addEventListener('change', cb);
-  }
+
+  selectsOfFilters.forEach((filter) => {
+    filter.addEventListener('change', cb);
+  });
 
   housingFeatures.forEach((feature) => {
     feature.addEventListener('change', cb);

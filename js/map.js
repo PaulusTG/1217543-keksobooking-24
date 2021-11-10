@@ -1,4 +1,3 @@
-import { changeFormState } from './form.js';
 import { createCard } from './templates-generator.js';
 
 const MAP = L.map('map-canvas');
@@ -77,14 +76,11 @@ const createMarker = (func, point) => {
 
 const makeMarkers = (cards) => {
 
-  MAP.whenReady(() => {
-    MARKER_GROUP.clearLayers();
-    cards
-      .forEach((card) => {
-        createMarker(() => createCard(card), card.location);
-      });
-  });
-  changeFormState(false);
+  MARKER_GROUP.clearLayers();
+  cards
+    .forEach((card) => {
+      createMarker(() => createCard(card), card.location);
+    });
 };
 
 const resetMainPin = () => {
@@ -100,4 +96,4 @@ const closeOpenedPopup = () => {
   MAP.closePopup();
 };
 
-export { addMap, addMainPin, makeMarkers, resetMainPin, closeOpenedPopup };
+export { addMap, addMainPin, makeMarkers, resetMainPin, closeOpenedPopup, MAP };
